@@ -56,8 +56,17 @@ export default function Home() {
         refreshInfo();
     };
 
+    // Auto refresh staking info every 30 seconds
     useEffect(() => {
-        refreshInfo();
+        if (!address) return;
+
+        refreshInfo(); // First fetch
+
+        const interval = setInterval(() => {
+            refreshInfo();
+        }, 30000); // Every 30 seconds
+
+        return () => clearInterval(interval);
     }, [address]);
 
     return (
