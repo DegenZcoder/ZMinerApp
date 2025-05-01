@@ -32,7 +32,7 @@ export default function Home() {
         const success = await approveToken(stakeAmount);
         if (success) {
             setApproved(true);
-            toast.success("Approve successful! You can now start mining.");
+            toast.success("Approval successful. You can now start mining.");
         }
     };
 
@@ -51,6 +51,11 @@ export default function Home() {
     };
 
     const handleClaim = async () => {
+        if (reward <= 0) {
+            toast.error("No rewards available to claim.");
+            return;
+        }
+
         await claimReward();
         toast.success("Reward claimed successfully!");
         refreshInfo();
@@ -58,10 +63,13 @@ export default function Home() {
 
     useEffect(() => {
         if (!address) return;
+
         refreshInfo();
+
         const interval = setInterval(() => {
             refreshInfo();
-        }, 30000);
+        }, 30000); // Auto-refresh every 30 seconds
+
         return () => clearInterval(interval);
     }, [address]);
 
@@ -95,7 +103,13 @@ export default function Home() {
                         </button>
                     )}
                     <button onClick={handleUnstake} className="px-4 py-2 bg-red-600 rounded hover:bg-red-700 shadow-lg">Unstake</button>
-                    <button onClick={handleClaim} className="px-4 py-2 bg-yellow-500 rounded hover:bg-yellow-600 shadow-lg">Claim Reward</button>
+                    <button 
+                        onClick={handleClaim} 
+                        className={`px-4 py-2 ${reward > 0 ? 'bg-yellow-500 hover:bg-yellow-600' : 'bg-gray-600'} rounded shadow-lg`}
+                        disabled={reward <= 0}
+                    >
+                        Claim Reward
+                    </button>
                 </div>
             </div>
 
@@ -118,7 +132,7 @@ export default function Home() {
                 </p>
             </div>
 
-            {/* Buy Z */}
+            {/* Buy $Z */}
             <div className="mt-20 w-full max-w-4xl space-y-6">
                 <h2 className="text-3xl font-bold mb-2">Buy $Z on DEX</h2>
                 <iframe
@@ -130,7 +144,7 @@ export default function Home() {
                 />
             </div>
 
-            {/* Chart */}
+            {/* Price Chart */}
             <div className="mt-20 w-full max-w-4xl space-y-6">
                 <h2 className="text-3xl font-bold mb-2">Price Chart $Z</h2>
                 <iframe
