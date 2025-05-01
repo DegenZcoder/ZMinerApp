@@ -56,15 +56,14 @@ export default function Home() {
         refreshInfo();
     };
 
-    // Auto refresh staking info every 30 seconds
     useEffect(() => {
         if (!address) return;
 
-        refreshInfo(); // First fetch
+        refreshInfo();
 
         const interval = setInterval(() => {
             refreshInfo();
-        }, 30000); // Every 30 seconds
+        }, 30000);
 
         return () => clearInterval(interval);
     }, [address]);
@@ -103,9 +102,13 @@ export default function Home() {
                 </div>
             </div>
 
-            <div className="space-y-2 text-lg">
-                <p>Total Staked: {staked} $Z</p>
-                <p>ZNODE: {Math.floor(staked / 1000)} $ZN</p>
+            <div className="space-y-2 text-lg text-right w-full max-w-2xl">
+                <p>
+                    <span className="inline-block w-40">Total Staked:</span> <span className="text-purple-400">{staked} $Z</span>
+                </p>
+                <p>
+                    <span className="inline-block w-40">ZNODE:</span> <span className="text-green-400">{Math.floor(staked / 1000)} $ZN</span>
+                </p>
             </div>
 
             <div className="space-y-2 text-lg flex items-center space-x-2 text-yellow-500">
