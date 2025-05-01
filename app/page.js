@@ -10,6 +10,7 @@ export default function Home() {
     const [stakeAmount, setStakeAmount] = useState("");
     const [staked, setStaked] = useState(0);
     const [reward, setReward] = useState(0);
+    const [approved, setApproved] = useState(false);
 
     const refreshInfo = async () => {
         if (!address) return;
@@ -26,12 +27,20 @@ export default function Home() {
         }
     };
 
-    const handleStake = async () => {
+    const handleApprove = async () => {
         if (!stakeAmount) return;
-        await approveToken(stakeAmount);
+        const success = await approveToken(stakeAmount);
+        if (success) {
+            setApproved(true);
+            toast.success("Approve successful! You can now start mining.");
+        }
+    };
+
+    const handleStake = async () => {
         await stakeToken(stakeAmount);
-        toast.success(`Successfully staked ${stakeAmount} $Z`);
+        toast.success("Mining started!");
         setStakeAmount("");
+        setApproved(false);
         refreshInfo();
     };
 
@@ -71,7 +80,15 @@ export default function Home() {
                     className="px-4 py-3 rounded-lg text-purple-600 border-2 border-purple-500 focus:outline-none focus:ring-2 focus:ring-purple-400 w-full"
                 />
                 <div className="space-x-4">
-                    <button onClick={handleStake} className="px-4 py-2 bg-blue-600 rounded hover:bg-blue-700 shadow-lg">Approve + Stake</button>
+                    {!approved ? (
+                        <button onClick={handleApprove} className="px-4 py-2 bg-blue-600 rounded hover:bg-blue-700 shadow-lg">
+                            Approve
+                        </button>
+                    ) : (
+                        <button onClick={handleStake} className="px-4 py-2 bg-green-600 rounded hover:bg-green-700 shadow-lg">
+                            Start Mining
+                        </button>
+                    )}
                     <button onClick={handleUnstake} className="px-4 py-2 bg-red-600 rounded hover:bg-red-700 shadow-lg">Unstake</button>
                     <button onClick={handleClaim} className="px-4 py-2 bg-yellow-500 rounded hover:bg-yellow-600 shadow-lg">Claim Reward</button>
                 </div>
@@ -101,7 +118,7 @@ export default function Home() {
             <div className="mt-20 w-full max-w-4xl space-y-6">
                 <h2 className="text-3xl font-bold mb-2">Price Chart $Z</h2>
                 <iframe
-                    src="https://www.coingecko.com/en/coins" // Đây là placeholder, bạn có thể thay link trực tiếp token sau khi list
+                    src="https://www.geckoterminal.com/base/pools/0xec35ba8f542abe673b16911fca390f24a1c66e53"
                     width="100%"
                     height="600"
                     style={{ border: "0", borderRadius: "12px" }}
