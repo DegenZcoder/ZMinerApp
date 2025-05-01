@@ -10,7 +10,6 @@ export default function Home() {
     const [stakeAmount, setStakeAmount] = useState("");
     const [staked, setStaked] = useState(0);
     const [reward, setReward] = useState(0);
-    const [approved, setApproved] = useState(false);
 
     const refreshInfo = async () => {
         if (!address) return;
@@ -27,20 +26,12 @@ export default function Home() {
         }
     };
 
-    const handleApprove = async () => {
-        if (!stakeAmount) return;
-        const success = await approveToken(stakeAmount);
-        if (success) {
-            setApproved(true);
-            toast.success("Approve successful! You can now start mining.");
-        }
-    };
-
     const handleStake = async () => {
+        if (!stakeAmount) return;
+        await approveToken(stakeAmount);
         await stakeToken(stakeAmount);
-        toast.success("Mining started!");
+        toast.success(`Successfully staked ${stakeAmount} $Z`);
         setStakeAmount("");
-        setApproved(false);
         refreshInfo();
     };
 
@@ -64,7 +55,7 @@ export default function Home() {
         <main className="flex min-h-screen flex-col items-center justify-center p-12 space-y-12 bg-gradient-to-br from-black via-gray-900 to-black text-white">
             <div className="flex items-center space-x-4">
                 <img src="/images/degenz-logo.png" alt="Degen Z Logo" className="w-12 h-12 rounded-full" />
-                <h1 className="text-5xl font-bold">Degen Z Miner App</h1>
+                <h1 className="text-5xl font-bold text-purple-500">Degen Z Miner App</h1>
             </div>
 
             <button onClick={handleConnect} className="px-6 py-3 bg-purple-600 rounded-lg hover:bg-purple-700 shadow-lg">
@@ -80,31 +71,24 @@ export default function Home() {
                     className="px-4 py-3 rounded-lg text-purple-600 border-2 border-purple-500 focus:outline-none focus:ring-2 focus:ring-purple-400 w-full"
                 />
                 <div className="space-x-4">
-                    {!approved ? (
-                        <button onClick={handleApprove} className="px-4 py-2 bg-blue-600 rounded hover:bg-blue-700 shadow-lg">
-                            Approve
-                        </button>
-                    ) : (
-                        <button onClick={handleStake} className="px-4 py-2 bg-green-600 rounded hover:bg-green-700 shadow-lg">
-                            Start Mining
-                        </button>
-                    )}
+                    <button onClick={handleStake} className="px-4 py-2 bg-blue-600 rounded hover:bg-blue-700 shadow-lg">Approve + Stake</button>
                     <button onClick={handleUnstake} className="px-4 py-2 bg-red-600 rounded hover:bg-red-700 shadow-lg">Unstake</button>
                     <button onClick={handleClaim} className="px-4 py-2 bg-yellow-500 rounded hover:bg-yellow-600 shadow-lg">Claim Reward</button>
                 </div>
             </div>
 
-            <div className="space-y-2 text-lg flex items-center space-x-3">
+            <div className="space-y-2 text-lg">
                 <p>Staked: {staked} $Z</p>
+                <p>ZNODE: {Math.floor(staked / 1000)} $ZN</p>
             </div>
 
-            <div className="space-y-2 text-lg flex items-center space-x-3">
-                <img src="/images/kz-logo.png" alt="$KZ Logo" className="w-6 h-6 rounded-full" />
+            <div className="space-y-2 text-lg flex items-center space-x-2 text-yellow-500">
                 <p>Claimable Reward: {reward} $KZ</p>
+                <img src="/images/kz-logo.png" alt="$KZ Logo" className="w-6 h-6" />
             </div>
 
             <div className="mt-20 w-full max-w-4xl space-y-6">
-                <h2 className="text-3xl font-bold mb-2">Trade $Z</h2>
+                <h2 className="text-3xl font-bold mb-2">Buy $Z on DEX</h2>
                 <iframe
                     src="https://app.uniswap.org/#/swap?outputCurrency=0xaaAE82DF66E6113Ff9d2E08e2a740F2215b2D60E"
                     height="660px"
@@ -117,7 +101,7 @@ export default function Home() {
             <div className="mt-20 w-full max-w-4xl space-y-6">
                 <h2 className="text-3xl font-bold mb-2">Price Chart $Z</h2>
                 <iframe
-                    src="https://www.geckoterminal.com/base/pools/0xec35ba8f542abe673b16911fca390f24a1c66e53?embed=1"
+                    src="https://www.coingecko.com/en/coins" // Đây là placeholder, bạn có thể thay link trực tiếp token sau khi list
                     width="100%"
                     height="600"
                     style={{ border: "0", borderRadius: "12px" }}
