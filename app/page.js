@@ -96,12 +96,14 @@ export default function Home() {
 
             <div className="space-y-2 text-lg">
                 <p>Total Staked: {staked} $Z</p>
-                <p>ZNODE count: {Math.floor(staked / 1000)} $ZN</p>
+                <p>ZNODE: {Math.floor(staked / 1000)} $ZN</p>
             </div>
 
             <div className="space-y-2 text-lg flex items-center space-x-2 text-yellow-500">
-                <p>Claimable Reward: {reward} $KZ</p>
-                <img src="/images/kz-logo.png" alt="$KZ Logo" className="w-6 h-6" />
+                <p className="flex items-center space-x-2">
+                    <span>Claimable Reward: {reward} $KZ</span>
+                    <img src="/images/kz-logo.png" alt="$KZ Logo" className="w-5 h-5 inline-block align-middle ml-1" />
+                </p>
             </div>
 
             <div className="mt-20 w-full max-w-4xl space-y-6">
