@@ -95,8 +95,8 @@ export default function Home() {
             </div>
 
             <div className="space-y-2 text-lg">
-                <p>Staked: {staked} $Z</p>
-                <p>ZNODE: {Math.floor(staked / 1000)} $ZN</p>
+                <p>Total Staked: {staked} $Z</p>
+                <p>ZNODE count: {Math.floor(staked / 1000)} $ZN</p>
             </div>
 
             <div className="space-y-2 text-lg flex items-center space-x-2 text-yellow-500">
