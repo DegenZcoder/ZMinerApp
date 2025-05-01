@@ -58,13 +58,10 @@ export default function Home() {
 
     useEffect(() => {
         if (!address) return;
-
         refreshInfo();
-
         const interval = setInterval(() => {
             refreshInfo();
         }, 30000);
-
         return () => clearInterval(interval);
     }, [address]);
 
@@ -102,15 +99,18 @@ export default function Home() {
                 </div>
             </div>
 
-            <div className="space-y-2 text-lg text-right w-full max-w-2xl">
-                <p>
-                    <span className="inline-block w-40">Total Staked:</span> <span className="text-purple-400">{staked} $Z</span>
-                </p>
-                <p>
-                    <span className="inline-block w-40">ZNODE:</span> <span className="text-green-400">{Math.floor(staked / 1000)} $ZN</span>
+            {/* Total Staked + NODE */}
+            <div className="space-y-2 text-lg flex items-center justify-center text-white">
+                <p className="flex items-center space-x-2">
+                    <span>Total Staked:</span>
+                    <span className="text-purple-400">{staked} $Z</span>
+                    <img src="/images/degenz-logo.png" alt="$Z Logo" className="w-5 h-5 inline-block align-middle ml-1" />
+                    <span className="text-gray-400">|</span>
+                    <span className="text-green-400">{Math.floor(staked / 1000)} NODE</span>
                 </p>
             </div>
 
+            {/* Claimable Reward */}
             <div className="space-y-2 text-lg flex items-center space-x-2 text-yellow-500">
                 <p className="flex items-center space-x-2">
                     <span>Claimable Reward: {reward} $KZ</span>
@@ -118,6 +118,7 @@ export default function Home() {
                 </p>
             </div>
 
+            {/* Buy Z */}
             <div className="mt-20 w-full max-w-4xl space-y-6">
                 <h2 className="text-3xl font-bold mb-2">Buy $Z on DEX</h2>
                 <iframe
@@ -129,6 +130,7 @@ export default function Home() {
                 />
             </div>
 
+            {/* Chart */}
             <div className="mt-20 w-full max-w-4xl space-y-6">
                 <h2 className="text-3xl font-bold mb-2">Price Chart $Z</h2>
                 <iframe
