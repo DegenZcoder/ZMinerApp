@@ -103,10 +103,10 @@ export default function Home() {
             <div className="space-y-2 text-lg flex items-center justify-center text-white">
                 <p className="flex items-center space-x-2">
                     <span>Total Staked:</span>
-                    <span className="text-purple-400">{staked} $Z</span>
+                    <span className="text-purple-400">{Math.floor(staked).toLocaleString()} $Z</span>
                     <img src="/images/degenz-logo.png" alt="$Z Logo" className="w-5 h-5 inline-block align-middle ml-1" />
                     <span className="text-gray-400">|</span>
-                    <span className="text-green-400">{Math.floor(staked / 1000)} NODE</span>
+                    <span className="text-green-400">{Math.floor(staked / 1000).toLocaleString()} NODE</span>
                 </p>
             </div>
 
