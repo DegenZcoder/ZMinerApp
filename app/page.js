@@ -1,11 +1,22 @@
 "use client";
 
+const MAINTENANCE_MODE = false; // <<< BẬT = true / TẮT = false
+
 import { useState, useEffect } from "react";
 import { connectWallet } from "../lib/wallet";
 import { getStakingInfo, approveToken, stakeToken, unstakeToken } from "../lib/staking";
 import toast from "react-hot-toast";
 
 export default function Home() {
+    if (MAINTENANCE_MODE) {
+        return (
+            <main className="flex min-h-screen flex-col items-center justify-center bg-black text-white">
+                <h1 className="text-5xl font-bold mb-6">🚧 Website Updating 🚧</h1>
+                <p className="text-lg">Our miner app is currently being updated. Please check back later.</p>
+            </main>
+        );
+    }
+
     const [address, setAddress] = useState("");
     const [stakeAmount, setStakeAmount] = useState("");
     const [staked, setStaked] = useState(0);
