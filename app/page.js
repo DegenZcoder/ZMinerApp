@@ -2,21 +2,19 @@
 
 import { useState, useEffect } from "react";
 import { connectWallet } from "../lib/wallet";
-import { getStakingInfo, approveToken, stakeToken, unstakeToken, claimReward } from "../lib/staking";
+import { getStakingInfo, approveToken, stakeToken, unstakeToken } from "../lib/staking";
 import toast from "react-hot-toast";
 
 export default function Home() {
     const [address, setAddress] = useState("");
     const [stakeAmount, setStakeAmount] = useState("");
     const [staked, setStaked] = useState(0);
-    const [reward, setReward] = useState(0);
     const [approved, setApproved] = useState(false);
 
     const refreshInfo = async () => {
         if (!address) return;
         const info = await getStakingInfo(address);
         setStaked(info.staked);
-        setReward(info.reward);
     };
 
     const handleConnect = async () => {
@@ -50,17 +48,6 @@ export default function Home() {
         refreshInfo();
     };
 
-    const handleClaim = async () => {
-        if (reward <= 0) {
-            toast.error("No rewards available to claim.");
-            return;
-        }
-
-        await claimReward();
-        toast.success("Reward claimed successfully!");
-        refreshInfo();
-    };
-
     useEffect(() => {
         if (!address) return;
 
@@ -68,7 +55,7 @@ export default function Home() {
 
         const interval = setInterval(() => {
             refreshInfo();
-        }, 30000); // Auto-refresh every 30 seconds
+        }, 30000);
 
         return () => clearInterval(interval);
     }, [address]);
@@ -103,13 +90,6 @@ export default function Home() {
                         </button>
                     )}
                     <button onClick={handleUnstake} className="px-4 py-2 bg-red-600 rounded hover:bg-red-700 shadow-lg">Unstake</button>
-                    <button 
-                        onClick={handleClaim} 
-                        className={`px-4 py-2 ${reward > 0 ? 'bg-yellow-500 hover:bg-yellow-600' : 'bg-gray-600'} rounded shadow-lg`}
-                        disabled={reward <= 0}
-                    >
-                        Claim Reward
-                    </button>
                 </div>
             </div>
 
@@ -121,14 +101,6 @@ export default function Home() {
                     <img src="/images/degenz-logo.png" alt="$Z Logo" className="w-5 h-5 inline-block align-middle ml-1" />
                     <span className="text-gray-400">|</span>
                     <span className="text-green-400">{Math.floor(staked / 1000).toLocaleString()} NODE</span>
-                </p>
-            </div>
-
-            {/* Claimable Reward */}
-            <div className="space-y-2 text-lg flex items-center space-x-2 text-yellow-500">
-                <p className="flex items-center space-x-2">
-                    <span>Claimable Reward: {reward} $KZ</span>
-                    <img src="/images/kz-logo.png" alt="$KZ Logo" className="w-5 h-5 inline-block align-middle ml-1" />
                 </p>
             </div>
 
