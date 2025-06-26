@@ -119,7 +119,7 @@ export default function Home() {
             <div className="mt-20 w-full max-w-4xl space-y-6">
                 <h2 className="text-3xl font-bold mb-2">Buy $Z on DEX</h2>
                 <iframe
-                    src="https://app.uniswap.org/#/swap?outputCurrency=0xaaAE82DF66E6113Ff9d2E08e2a740F2215b2D60E"
+                    src="https://app.uniswap.org/explore/tokens/base/0xaaae82df66e6113ff9d2e08e2a740f2215b2d60e?inputCurrency=0xaaae82df66e6113ff9d2e08e2a740f2215b2d60e"
                     height="660px"
                     width="100%"
                     style={{ border: "0", borderRadius: "12px" }}
